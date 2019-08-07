@@ -1,0 +1,18 @@
+dist: xenial
+
+language: python
+
+python:
+  - "3.7"
+
+services:
+  - docker
+
+before_install:
+  - docker build . -t logo-resizer-service:0.1
+  - docker images
+  - docker run -d -p 127.0.0.1:8080:5001 logo-resizer-service:0.1
+
+script:
+  - bash test.sh
+
