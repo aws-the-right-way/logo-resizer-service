@@ -9,19 +9,21 @@ from PIL import Image
 from flask import Flask
 from flask import request
 from flask_cors import CORS
+from utils import get_secret
 
 app = Flask(__name__)
 CORS(app)
 app.logger.setLevel(logging.INFO)
 
 basewidth = 300
-s3 = boto3.client('s3', region_name='eu-central-1', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                  aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'))
+aws_access_key_id, aws_secret_access_key = get_secret()
+s3 = boto3.client('s3', region_name='eu-central-1', aws_access_key_id=aws_access_key_id,
+                  aws_secret_access_key=aws_secret_access_key)
 bucket_url = 'https://aws-the-right-way.s3.eu-central-1.amazonaws.com/'
 
-sqs = boto3.client('sqs', region_name='eu-central-1', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                   aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'))
-queue_url = 'https://sqs.eu-central-1.amazonaws.com/595674156649/stock-of-the-day'
+sqs = boto3.client('sqs', region_name='eu-central-1', aws_access_key_id=aws_access_key_id,
+                   aws_secret_access_key=aws_secret_access_key)
+queue_url = 'https://sqs.eu-central-1.amazonaws.com/740966400558/stock-of-the-day'
 
 
 @app.route('/api/upload_image', methods=['POST'])

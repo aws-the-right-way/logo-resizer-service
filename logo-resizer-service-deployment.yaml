@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logo-resizer-service
+  labels:
+    app: resizer
+spec:
+  replicas: 3
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: resizer
+  template:
+    metadata:
+      labels:
+        app: resizer
+    spec:
+      containers:
+        - name: logo-resizer-service
+          image: 740966400558.dkr.ecr.eu-central-1.amazonaws.com/logo-resizer-service:1.0
+          ports:
+            - containerPort: 5001
+          livenessProbe:
+            httpGet:
+              path: /api/ping
+              port: 5001
+            initialDelaySeconds: 15
